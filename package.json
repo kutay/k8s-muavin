@@ -1,0 +1,26 @@
+{
+  "name": "k8s-muavin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kutay/k8s-muavin.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kutay/k8s-muavin/issues"
+  },
+  "homepage": "https://github.com/kutay/k8s-muavin#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  },
+  "dependencies": {
+    "ioredis": "^5.2.3"
+  }
+}
