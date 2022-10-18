@@ -1,3 +1,4 @@
+const _ = require("lodash");
 const cache = require("./cache");
 const trivy = require("../connectors/trivy");
 
@@ -34,7 +35,32 @@ async function analyze_image(image) {
     return clean_results;
 }
 
+async function compare_images(image1, image2) {
+    const vulns1 = await analyze_image(image1);
+    const vulns2 = await analyze_image(image2);
+
+    const ids1 = vulns1.map((v) => v.VulnerabilityID);
+    const ids2 = vulns2.map((v) => v.VulnerabilityID);
+
+    const fixedVulns = _.difference(ids1, ids2);
+    const newVulns = _.difference(ids2, ids1);
+    const unfixedVulns = _.intersection(ids1, ids2);
+
+    return {
+        image: {
+            from: image1,
+            to: image2
+        },
+        vulns: {
+            fixed: fixedVulns,
+            unfixedVulns: unfixedVulns,
+            newVulns: newVulns
+        }
+    }
+}
+
 
 module.exports = {
-    analyze_image
+    analyze_image,
+    compare_images
 }
