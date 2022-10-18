@@ -2,7 +2,7 @@ const Redis = require("ioredis");
 const redis = new Redis();
 
 keys("*").then((result) => {
-    console.log(result);
+    console.log(`Redis keys : ${JSON.stringify(result, null, 2)}`);
 })
 
 async function keys(pattern) {
