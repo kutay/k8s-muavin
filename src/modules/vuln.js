@@ -21,15 +21,22 @@ async function scan_with_cache(image) {
 async function analyze_image(image) {
     const scan = await scan_with_cache(image);
 
-    const clean_results = scan.Results[0].Vulnerabilities.map((vuln) => {
-        return {
-            VulnerabilityID: vuln.VulnerabilityID,
-            PkgName: vuln.PkgName,
-            InstalledVersion: vuln.InstalledVersion,
-            FixedVersion: vuln.FixedVersion,
-            Severity: vuln.Severity,
-            Score: vuln.CVSS.nvd.V3Score
+    const clean_results = scan.Results.map((result) => {
+        if (!result.Vulnerabilities) {
+            return [];
         }
+        return result.Vulnerabilities.map((vuln) => {
+            return {
+                Target: result.Target,
+                Type: result.Type,
+                VulnerabilityID: vuln.VulnerabilityID,
+                PkgName: vuln.PkgName,
+                InstalledVersion: vuln.InstalledVersion,
+                FixedVersion: vuln.FixedVersion,
+                Severity: vuln.Severity,
+                Score: vuln.CVSS && vuln.CVSS.nvd && vuln.CVSS.nvd.V3Score
+            }
+        })
     });
 
     return clean_results;

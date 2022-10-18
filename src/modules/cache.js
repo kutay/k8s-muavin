@@ -14,7 +14,11 @@ async function exists(key) {
 }
 
 async function save(key, data, ttl) {
-    return redis.set(key, data);
+    if (ttl) {
+        return redis.set(key, data, "EX", ttl);
+    } else {
+        return redis.set(key, data);
+    }
 }
 
 async function retrieve(key) {
